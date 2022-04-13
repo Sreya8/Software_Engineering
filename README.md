@@ -4,6 +4,7 @@
 1. Language Used: Python 3.10
 2. Target Language: Python
 3. Editor Used: PyCharm
+4. Dependencies: sys, ast, re libraries
 
 ## Execution
 On the terminal type:
