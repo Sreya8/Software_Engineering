@@ -11,7 +11,7 @@ class abc:
     # Test Case 2 #
 
     print("Comments #")
-    print("abc")   # There can be comments here too
+    print("# This is not a comment")   # This is a comment
     var = "#abc is not a comment"
     print(" # inside print is not a comment")
 
@@ -26,10 +26,10 @@ class abc:
     This is a neatly formatted multiple line comment.
     """
 
-    """
+    '''
     # hashtags inside multiple line comments are not counted again
     
-    """
+    '''
 
     # Test Case 3 #
 
