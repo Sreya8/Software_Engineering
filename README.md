@@ -8,10 +8,15 @@
 
 ## Execution
 On the terminal type:
-python3 main.py <Name_of_input_file.py> <name_of_output_file>
+git clone https://github.com/Sreya8/Software_Engineering.git
+
+Navigate to the directory Software_Engineering
+
+Run the following command:
+python main.py <Name_of_input_file.py> <name_of_output_file>
 
 To run the code with the files uploaded use:
-python3 main.py Test.py results.txt
+python main.py Test.py results.txt
 
 
 # Logic Used
