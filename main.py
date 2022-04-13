@@ -72,13 +72,17 @@ def count_comments(filepath):
                             num_comment += 1
                             break
 
-        if '"""' in aline:
+        if '"""' in aline or "'''" in aline:
 
             if ([] != re.findall(r"\s*\"{3}.*\"{3}", aline)):
                 num_mul_comment += 1
                 continue
 
-            if aline.endswith('"""'):
+            if ([] != re.findall(r"\s*\'{3}.*\'{3}", aline)):
+                num_mul_comment += 1
+                continue
+
+            if aline.endswith('"""') or aline.endswith("'''"):
                 num_mul_comment += 1
                 break
 
@@ -126,7 +130,7 @@ def main():
     with open(writepath, "w") as f:
         f.write(f"LOC: {lines_of_code}\n")
         f.write(f"eLOC: {lines_of_code}\n")
-        f.write(f"Comment: {num_comments}\n")
+        f.write(f"Comment: {num_comments+num_mul_com}\n")
         f.write(f"Blank: {blank_lines}\n")
         f.write(f"No. of Functions: {num_of_func}\n")
 
