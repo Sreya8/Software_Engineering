@@ -16,7 +16,7 @@ Run the following command:
 > ````python metric_counter.py <Name_of_input_file.py> <name_of_output_file>````
 
 To run the code with the files uploaded use:
-> ````python metric_counter.py Test.py results.txt````
+> ````python metric_counter.py Test.py results.txt````</br>
 or
 > ````python3 metric_counter.py Test.py results.txt````
 
