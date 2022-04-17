@@ -17,6 +17,8 @@ Run the following command:
 
 To run the code with the files uploaded use:
 > ````python metric_counter.py Test.py results.txt````
+or
+> ````python3 metric_counter.py Test.py results.txt````
 
 Using the sample Test.py file, the following is output :
 >````LOC: 8````</br>
