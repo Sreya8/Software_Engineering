@@ -18,6 +18,13 @@ Run the following command:
 To run the code with the files uploaded use:
 > ````python metric_counter.py Test.py results.txt````
 
+Using the sample Test.py file, the following is output :
+>````LOC: 8````
+>````eLOC: 8````
+>````Comment: 15````
+>````Blank: 13````
+>````No. of Functions: 2````
+
 
 # Logic Used
 
