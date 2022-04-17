@@ -31,24 +31,6 @@ Pseudocode:
 6. Repeat from step 2 till the end of file is reached
 7. return no_blank
 
-## LOC
-1. Count the number of blank lines using the above procedure (Blank Lines)
-2. return total_number_of_lines - no_blank - no_comment
-
-## eLOC
-1. Count the number of blank lines using the above procedure (Blank Lines)
-2. return total_number_of_lines - no_blank - no_comment
-
-### Note: LOC and eLOC will be the same since python does not use stand alone curly braces
-
-## Functions
-1. Open the file
-2. Get the parse tree of the file
-3. Initialize no_func = 0
-4. For each item in the parse tree use the ast library to check if it is an instance of a function.
-5. If it is an instance of a function increment no_func by 1.
-6. Return no_func
-
 
 ## Comments
 ### Note: We have counted the single line as well as multiple line comments.
@@ -77,3 +59,24 @@ Pseudocode:
 7. return the sum of comments
 
 ### Note: A # in a multiple line comment is considered as part of multiple line comment. This way we do not count the same line twice.
+
+
+## LOC
+1. Count the number of blank lines using the above procedure (Blank Lines)
+2. return total_number_of_lines - no_blank - no_comment
+
+
+## eLOC
+1. Count the number of blank lines using the above procedure (Blank Lines)
+2. return total_number_of_lines - no_blank - no_comment
+
+### Note: LOC and eLOC will be the same since python does not use stand alone curly braces
+
+
+## Functions
+1. Open the file
+2. Get the parse tree of the file
+3. Initialize no_func = 0
+4. For each item in the parse tree use the ast library to check if it is an instance of a function.
+5. If it is an instance of a function increment no_func by 1.
+6. Return no_func
