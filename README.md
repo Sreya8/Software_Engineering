@@ -26,6 +26,7 @@ Using the sample Test.py file, the following is output :
 >````No. of Functions: 2````
 
 
+
 # Logic Used
 
 ## Blank Lines
