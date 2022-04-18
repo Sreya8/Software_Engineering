@@ -20,7 +20,8 @@ To run the code with the files uploaded use:
 or </br>
 > ````python3 metric_counter.py Test.py results.txt````
 
-Using the sample Test.py file, the following is output :
+## Sample Output
+Using the sample Test.py file, the following is the output :
 >````LOC: 8````</br>
 >````eLOC: 8````</br>
 >````Comment: 15````</br>
