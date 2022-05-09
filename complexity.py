@@ -32,7 +32,7 @@ def another_function(Y):
     while True:
         print("b")
         break;
-    return 0, 2, 3
+    return 0
 
 def one_more_function(X, Y, Z):
     print(abc)
