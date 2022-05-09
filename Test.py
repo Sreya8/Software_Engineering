@@ -1,36 +1,60 @@
-class abc:
 
-    # Test Case 1
-    def abc(self):
-        print("This is a function")
+def abc(X, Y):
+    print(X + Y)
+    if True:
+        print("a")
+    return 0
 
-        def nested():
-            print("This is a function too")
+if 1 == 1:
+    print("a")
+
+def xyz(X):
+    print(abc)
+    if True:
+        print("a")
+
+    while True:
+        print("b")
+        break;
+    return 0
 
 
-    # Test Case 2 #
+def another_function(Y):
+    print("abc")
+    val = 2
+    if True:
+        print("a")
+    if 1==val:
+        print("c")
+    else:
+        print("b")
 
-    print("Comments #")
-    print("# This is not a comment")   # This is a comment
-    var = "#abc is not a comment"
-    print(" # inside print is not a comment")
+    while True:
+        print("b")
+        break;
+    return 0, 2, 3
 
-    # Comments can have hashtags too ######
+def one_more_function(X, Y, Z):
+    print(abc)
+    val = 2
+    if val>2:
+        print("a")
+    elif val==2:
+        print("b")
+    else:
+        print("c")
 
-    """
-    This is a multiple line comment"""
+    while True:
+        print("b")
+        break;
+    return 0, 1
 
-    """ This is a multiple line comment in a single line """
-
-    """
-    This is a neatly formatted multiple line comment.
-    """
-
-    '''
-    # hashtags inside multiple line comments are not counted again
-    
-    '''
-
-    # Test Case 3 #
-
-    # Blank lines can have tabs too
+def main():
+    x = 5
+    y = 10
+    p = xyz(x,y)
+    if True:
+        print("a")
+    while True:
+        break
+    return 0
