@@ -1,3 +1,4 @@
+import math
 import sys
 import ast
 import re
@@ -5,6 +6,39 @@ import re
 def parse_file(filepath):
     with open(filepath, 'r') as f:
         return ast.parse(f.read(), filename=filepath)
+
+# Counting the Number of Functions
+def count_cyclo(filepath):
+    ptree = parse_file(filepath)
+    flag = 0
+    cyclomatic = 0
+    func_array = []
+    cyclo_array = []
+    argument = []
+
+    num_func = 0
+    for item in ast.walk(ptree):
+        if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+
+            func_array.append(item.name)
+            cyclomatic = 0
+            flag = 1
+
+            continue
+
+        if flag == 1 and isinstance(item, (ast.For, ast.AsyncFor, ast.While, ast.If)):
+            cyclomatic = cyclomatic + 1
+            continue
+
+        if flag == 1 and isinstance(item, (ast.Return)):
+            cyclomatic = cyclomatic + 1
+
+            cyclo_array.append(cyclomatic)
+            cyclomatic = 0
+            continue
+
+
+    return func_array, cyclo_array
 
 # Counting the Number of Functions
 def count_function(filepath):
@@ -16,6 +50,30 @@ def count_function(filepath):
             num_func += 1
 
     return num_func
+
+def count_ifc(filepath):
+    arguments = []
+    in_array = []
+    out_array = []
+
+    ptree = parse_file(filepath)
+    for item in ast.walk(ptree):
+        if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            arguments = [a.arg for a in item.args.args]
+            in_array.append(len(arguments))
+
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+        for aline in lines:
+            words = aline.split()
+            for word in words:
+                if word == "return":
+                    out_array.append(len(words)-1)
+
+        out_array.append(0)
+        return in_array, out_array
+
+
 
 # Counting the LOC
 def count_lines_of_code(filepath):
@@ -123,16 +181,23 @@ def main():
     writepath = sys.argv[2]
     num_codelines, blank_lines = count_lines_of_code(filepath)
     num_of_func = count_function(filepath)
+    name, cyclo = count_cyclo(filepath)
     num_comments, num_mul_com = count_comments(filepath)
     num_only_plain_comments = count_only_comments(filepath)
     lines_of_code = num_codelines - num_mul_com - num_only_plain_comments
+    in_arr, out_arr = count_ifc(filepath)
 
     with open(writepath, "w") as f:
-        f.write(f"LOC: {lines_of_code}\n")
-        f.write(f"eLOC: {lines_of_code}\n")
-        f.write(f"Comment: {num_comments+num_mul_com}\n")
-        f.write(f"Blank: {blank_lines}\n")
-        f.write(f"No. of Functions: {num_of_func}\n")
+        # f.write(f"LOC: {lines_of_code}\n")
+        # f.write(f"eLOC: {lines_of_code}\n")
+        # f.write(f"Comment: {num_comments+num_mul_com}\n")
+        # f.write(f"Blank: {blank_lines}\n")
+        cyclo.append(1)
+        for i in range(num_of_func):
+            f.write(f"{name[i]}:\n")
+            f.write(f"   - cyclomatic: {cyclo[i]}\n")
+            ifc = int(math.pow((in_arr[i]*out_arr[i]), 2))
+            f.write(f"   - ifc: {ifc}\n")
 
 if __name__ == "__main__":
     main()
