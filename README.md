@@ -30,10 +30,10 @@ Using the sample complexity.py file, the following is the output :
 >````   - cyclomatic: 3````</br>
 >````   - ifc: 1````</br>
 >````another_function:````</br>
->````   - cyclomatic: 4````</br>
+>````   - cyclomatic: 6````</br>
 >````   - ifc: 9````</br>
 >````one_more_function:````</br>
->````   - cyclomatic: 3````</br>
+>````   - cyclomatic: 4````</br>
 >````   - ifc: 36````</br>
 >````main:````</br>
 >````   - cyclomatic: 3````</br>
