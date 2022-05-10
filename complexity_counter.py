@@ -14,9 +14,8 @@ def count_cyclo(filepath):
     cyclomatic = 0
     func_array = []
     cyclo_array = []
-    argument = []
+    elif_arr = []
 
-    num_func = 0
     for item in ast.walk(ptree):
         if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
 
@@ -26,13 +25,16 @@ def count_cyclo(filepath):
 
             continue
 
-        if flag == 1 and isinstance(item, (ast.For, ast.AsyncFor, ast.While, ast.If)):
+        if flag == 1 and (isinstance(item, (ast.For, ast.AsyncFor, ast.While, ast.If))):
             cyclomatic = cyclomatic + 1
-            continue
+
+            if item.orelse:
+                if isinstance(item.orelse[0], ast.If):
+                    cyclomatic = cyclomatic + 1
+
 
         if flag == 1 and isinstance(item, (ast.Return)):
             cyclomatic = cyclomatic + 1
-
             cyclo_array.append(cyclomatic)
             cyclomatic = 0
             continue
