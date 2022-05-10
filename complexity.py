@@ -22,17 +22,25 @@ def xyz(X):
 def another_function(Y):
     print("abc")
     val = 2
-    if True:
-        print("a")
+
     if 1==val:
         print("c")
+    elif val==3:
+        print("d")
+    else:
+        print("b")
+
+    if 1==val:
+        print("c")
+    elif val==3:
+        print("d")
     else:
         print("b")
 
     while True:
         print("b")
         break;
-    return 0
+    return 0, 2, 3
 
 def one_more_function(X, Y, Z):
     print(abc)
