@@ -7,40 +7,6 @@ def parse_file(filepath):
     with open(filepath, 'r') as f:
         return ast.parse(f.read(), filename=filepath)
 
-# Counting the Number of Functions
-def count_cyclo(filepath):
-    ptree = parse_file(filepath)
-    flag = 0
-    cyclomatic = 0
-    func_array = []
-    cyclo_array = []
-    elif_arr = []
-
-    for item in ast.walk(ptree):
-        if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
-
-            func_array.append(item.name)
-            cyclomatic = 0
-            flag = 1
-
-            continue
-
-        if flag == 1 and (isinstance(item, (ast.For, ast.AsyncFor, ast.While, ast.If))):
-            cyclomatic = cyclomatic + 1
-
-            if item.orelse:
-                if isinstance(item.orelse[0], ast.If):
-                    cyclomatic = cyclomatic + 1
-
-
-        if flag == 1 and isinstance(item, (ast.Return)):
-            cyclomatic = cyclomatic + 1
-            cyclo_array.append(cyclomatic)
-            cyclomatic = 0
-            continue
-
-
-    return func_array, cyclo_array
 
 # Counting the Number of Functions
 def count_function(filepath):
@@ -53,8 +19,45 @@ def count_function(filepath):
 
     return num_func
 
+# Counting the Cyclomatic Number
+def count_cyclo(filepath):
+    ptree = parse_file(filepath)
+    flag = 0
+    func_array = []
+    cyclo_array = []
+
+    for item in ast.walk(ptree):
+        if isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)):
+
+            func_array.append(item.name)
+            flag = 1
+
+            continue
+
+    count = 0
+    with open(filepath, 'r') as f:
+        lines = f.readlines()
+        for aline in lines:
+            words = aline.split()
+            if words:
+                for more_words in words:
+                    refined_words = more_words.split('(')
+                    if refined_words[0] == "def":
+                        count = 0
+                        flag = 1
+                    elif flag == 1 and (refined_words[0] == "for" or refined_words[0] == "while" or refined_words[0] == "if" or refined_words[0] == "elif"):
+                            count = count + 1
+                    elif flag == 1 and refined_words[0] == "return":
+                        count = count + 1
+                        cyclo_array.append(count)
+                        flag = 0
+                        count = 0
+
+    return func_array, cyclo_array
+
+
+# Counting the IFC
 def count_ifc(filepath):
-    arguments = []
     in_array = []
     out_array = []
 
@@ -89,6 +92,7 @@ def count_lines_of_code(filepath):
             num_blank += 1
 
     return len(lines) - num_blank, num_blank
+
 
 # Counting the number of single line and multiple line comments
 def count_comments(filepath):
