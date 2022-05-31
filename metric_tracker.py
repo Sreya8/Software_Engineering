@@ -1,6 +1,11 @@
+import os.path
+import os
 import sys
 import ast
 import re
+import yaml
+import json
+from git import Repo
 
 def parse_file(filepath):
     with open(filepath, 'r') as f:
@@ -297,9 +302,82 @@ def count_lcom(filepath):
 
     return lcom_array
 
+
+#convert yaml file to json format
+def convert_to_json(filename1, filename2):
+    with open(filename1, 'r') as f:
+        yaml_load = yaml.safe_load(f)
+
+        with open(filename2, 'w') as json_file:
+            json.dump(yaml_load, json_file, indent=4)
+
 def main():
     filepath = sys.argv[1]
     writepath = sys.argv[2]
+    yamlfile = "temp.yaml"
+    commits = []
+
+    #open(writepath, 'w').close()
+    with open(filepath, 'r') as f:
+
+        lines = f.readlines()
+
+
+        with open(yamlfile, "a") as f:
+
+            for i in range(len(lines)):
+                if i == 0:
+                    f.write(f"{lines[i]}")
+                    repo = lines[i].split()
+                    repo_path = str(repo[-1])
+                    # print(type(repo_path))
+
+                if i == 1:
+                    f.write(f"{lines[i]}")
+                    target = lines[i].split()
+                    target_path = str(target[-1])
+                    # print(type(target_path))
+
+
+                if i == 2:
+                    f.write("metric_values:\n")
+
+                if i > 2:
+                    commits.append(lines[i].split()[-1])
+                    # print(commits)
+
+    # Repo Path
+    repo = Repo(repo_path)
+
+    path_to_read = os.path.join(repo_path, target_path)
+
+
+    for commit in commits:
+
+        repo.git.checkout(commit)
+
+        # print("Path to Read", path_to_read)
+
+        num_codelines, blank_lines = count_lines_of_code(path_to_read)
+        num_of_func = count_function(path_to_read)
+        num_comments, num_mul_com = count_comments(path_to_read)
+        num_only_plain_comments = count_only_comments(path_to_read)
+        lines_of_code = num_codelines - num_mul_com - num_only_plain_comments
+
+        with open(yamlfile, "a") as f:
+            f.write(f"   {commit}:\n")
+            f.write(f"      LOC: {lines_of_code}\n")
+            f.write(f"      eLOC: {lines_of_code}\n")
+            f.write(f"      Comment: {num_comments + num_mul_com}\n")
+            f.write(f"      Blank: {blank_lines}\n")
+            f.write(f"      NFunc: {num_of_func}\n")
+
+    
+
+    convert_to_json(yamlfile, writepath)
+
+    os.remove(yamlfile)
+
     # num_codelines, blank_lines = count_lines_of_code(filepath)
     # num_of_func = count_function(filepath)
     # name, cyclo = count_cyclo(filepath)
@@ -307,30 +385,18 @@ def main():
     # num_only_plain_comments = count_only_comments(filepath)
     # lines_of_code = num_codelines - num_mul_com - num_only_plain_comments
     # in_arr, out_arr = count_ifc(filepath)
-    classes, wmc = count_wmc(filepath)
-    cbo = count_cbo(filepath)
-    rfc = count_rfc(filepath)
-    lcom = count_lcom(filepath)
+    # classes, wmc = count_wmc(filepath)
+    # cbo = count_cbo(filepath)
+    # rfc = count_rfc(filepath)
+    # lcom = count_lcom(filepath)
 
-
-    with open(writepath, "w") as f:
-        for i in range(len(classes)):
-            f.write(f"{classes[i]}:\n")
-            f.write(f"   - wmc: {wmc[i]}\n")
-            f.write(f"   - cbo: {cbo[i]}\n")
-            f.write(f"   - rfc: {rfc[i]}\n")
-            f.write(f"   - lcom: {lcom[i]}\n")
-
-    #     # f.write(f"LOC: {lines_of_code}\n")
-    #     # f.write(f"eLOC: {lines_of_code}\n")
-    #     # f.write(f"Comment: {num_comments+num_mul_com}\n")
-    #     # f.write(f"Blank: {blank_lines}\n")
-    #     cyclo.append(1)
-    #     for i in range(num_of_func):
-    #         f.write(f"{name[i]}:\n")
-    #         f.write(f"   - cyclomatic: {cyclo[i]}\n")
-    #         ifc = int(math.pow((in_arr[i]*out_arr[i]), 2))
-    #         f.write(f"   - ifc: {ifc}\n")
+    # with open(writepath, "w") as f:
+    #     for i in range(len(classes)):
+    #         f.write(f"{classes[i]}:\n")
+    #         f.write(f"   - wmc: {wmc[i]}\n")
+    #         f.write(f"   - cbo: {cbo[i]}\n")
+    #         f.write(f"   - rfc: {rfc[i]}\n")
+    #         f.write(f"   - lcom: {lcom[i]}\n")
 
 if __name__ == "__main__":
     main()
